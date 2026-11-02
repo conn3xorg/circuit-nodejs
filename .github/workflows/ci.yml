@@ -79,7 +79,7 @@ jobs:
             echo "console.log(\"sum\", [1,2,3].reduce((a,b)=>a+b))" > /tmp/t.js
             node /tmp/t.js | grep -x "sum 6"
             semver -r "^1.0.0" 1.2.3 | grep -x 1.2.3
-            ! semver -r "^2.0.0" 1.2.3
+            if semver -r "^2.0.0" 1.2.3; then exit 1; fi
             npm prefix -g | grep -x /usr/local
             npm ls -g --depth=0 | grep semver@7.8.5
           '
