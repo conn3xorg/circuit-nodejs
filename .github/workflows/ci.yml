@@ -83,6 +83,27 @@ jobs:
             npm prefix -g | grep -x /usr/local
             npm ls -g --depth=0 | grep semver@7.8.5
           '
+      - name: Move to another Node.js, and see the global package install again
+        working-directory: examples/local
+        run: |
+          sudo podman exec circuit-nodejs touch /usr/local/lib/node_modules/semver/old-install
+          cat > override.tf <<'EOF'
+          module "nodejs" {
+            node_version = "24.22.2"
+            checksums = {
+              x64   = "361718c444e49af2ca5a110c83ba6a8901143f23ab285ebbef0341f391f482a9"
+              arm64 = "95c264150aceb7f3437a29fd6984924f5f8d1511ea3cbd6c508b83f6c555dae2"
+            }
+          }
+          EOF
+          conn3x apply -auto-approve
+          conn3x plan -detailed-exitcode
+          sudo podman exec circuit-nodejs bash -lc '
+            set -eux
+            node -p process.version | grep -x v24.22.2
+            semver -r "^1.0.0" 1.2.3 | grep -x 1.2.3
+            ! test -e /usr/local/lib/node_modules/semver/old-install
+          '
       - name: Clean up
         if: always()
         working-directory: examples/local
