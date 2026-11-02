@@ -108,13 +108,14 @@ circuit "nodejs" {
 
   # sudo's secure_path leaves out /usr/local/bin on the Red Hat family, and
   # npm's shebang finds node through PATH. A new Node.js runs the install
-  # again, since a package's native addons are built for one release.
+  # again, since a package's native addons are built for one release. npm
+  # doesn't record which release that was, so the stamp in the package's
+  # directory does, and the check reads it with the package's version.
   step "global_package" {
     for_each = var.global_packages
     command {
-      command  = "PATH=/usr/local/bin:$PATH npm install --global --no-audit --no-fund '${item.key}@${item.value}'"
-      unless   = "[ \"$(/usr/local/bin/node -p \"require('/usr/local/lib/node_modules/${item.key}/package.json').version\" 2>/dev/null)\" = '${item.value}' ]"
-      triggers = { node = var.node_version }
+      command = "PATH=/usr/local/bin:$PATH npm install --global --no-audit --no-fund '${item.key}@${item.value}' && echo '${var.node_version}' > '/usr/local/lib/node_modules/${item.key}/.conn3x-node'"
+      unless  = "[ \"$(/usr/local/bin/node -p \"require('/usr/local/lib/node_modules/${item.key}/package.json').version\" 2>/dev/null)\" = '${item.value}' ] && [ \"$(cat '/usr/local/lib/node_modules/${item.key}/.conn3x-node' 2>/dev/null)\" = '${var.node_version}' ]"
     }
   }
 }

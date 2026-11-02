@@ -8,7 +8,7 @@ If your hosts need command-line tools from npm, you can list those too, each at 
 
 ```hcl
 module "nodejs" {
-  source = "github.com/conn3xorg/circuit-nodejs?ref=v0.1.0"
+  source = "github.com/conn3xorg/circuit-nodejs?ref=v0.1.1"
 
   hosts                = { app1 = "203.0.113.10", app2 = "203.0.113.11" }
   ssh_private_key_file = "~/.ssh/id_ed25519"
@@ -57,7 +57,7 @@ On each host, in order:
 3. Unpacks it to `/opt/nodejs/node-vVERSION-linux-ARCH`.
 4. Links `node`, `npm` and `npx` into `/usr/local/bin`.
 5. Writes the release's `etc/npmrc`, which sets npm's global prefix to `/usr/local`, so global packages' commands land on the `PATH` and stay put across releases.
-6. Runs `npm install --global` for each of `global_packages`, unless that exact version is already there.
+6. Runs `npm install --global` for each of `global_packages`, unless this Node.js already installed that exact version. npm doesn't record which Node.js a package was installed with, so a `.conn3x-node` file in the package's directory does. The first apply after upgrading to this circuit's v0.1.1 installs each package once more, to write that file.
 
 Before the circuit runs, the `conn3x_host` data source reads each host's architecture and distribution over SSH. The architecture picks the tarball and the distribution picks the library package names.
 
