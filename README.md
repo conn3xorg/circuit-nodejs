@@ -10,7 +10,7 @@ If your hosts need command-line tools from npm, you can list those too, each at 
 
 ```hcl
 module "nodejs" {
-  source = "github.com/conn3xorg/circuit-nodejs?ref=v0.1.1"
+  source = "github.com/conn3xorg/circuit-nodejs?ref=v0.1.2"
 
   hosts                = { app1 = "203.0.113.10", app2 = "203.0.113.11" }
   ssh_private_key_file = "~/.ssh/id_ed25519"
