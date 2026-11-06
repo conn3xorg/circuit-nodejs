@@ -92,7 +92,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's archite
 
 ## Requirements
 
-Requires Conn3x v0.6.9 or later, and hosts with outbound HTTPS to nodejs.org, plus registry.npmjs.org when you list global packages. amd64 and arm64.
+Requires Conn3x v0.7.1 or later, and hosts with outbound HTTPS to nodejs.org, plus registry.npmjs.org when you list global packages. amd64 and arm64.
 
 ## Tested on
 
