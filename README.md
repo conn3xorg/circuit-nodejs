@@ -2,7 +2,7 @@
 
 [![Conn3x grade](https://conn3x.org/circuits/nodejs/grade.svg)](https://conn3x.org/circuits/nodejs/grade)
 
-A Conn3x circuit that puts one exact Node.js release on all your hosts. Distributions ship whatever Node.js they froze at release time, so a fleet of Ubuntu and Rocky Linux ends up running different majors, and the fix is usually a curl-to-bash script nobody pinned. This circuit takes the official tarball from nodejs.org instead, checks it against the release's SHA-256, and gives you the same Node.js on every distribution: 26.13.0 by default, the current LTS.
+A Conn3x circuit that puts one exact Node.js release on all your hosts. Distributions ship whatever Node.js they froze at release time, so a fleet of Ubuntu and Rocky Linux ends up running different majors, and the fix is usually a curl-to-bash script nobody pinned. This circuit takes the official tarball from nodejs.org instead, checks it against the release's SHA-256, and gives you the same Node.js on every distribution: 26.13.1 by default, the current LTS.
 
 If your hosts need command-line tools from npm, you can list those too, each at an exact version.
 
@@ -80,15 +80,15 @@ Before the circuit runs, the `conn3x_host` data source reads each host's archite
 | `ssh_private_key_file` | string | `null` | Path to a private key. When null, Conn3x uses the SSH agent. |
 | `ssh_known_hosts_file` | string | `null` | known_hosts file to check host keys against. When null, `~/.ssh/known_hosts`. Not used for a host object with `host_key`. |
 | `ssh_become` | bool | `false` | Run commands as root through sudo. Set it when `ssh_user` isn't root. |
-| `node_version` | string | `"26.13.0"` | Node.js release to install. Change `checksums` with it. |
-| `checksums` | map(string) | The tarballs of 26.13.0 | SHA-256 of the `x64` and `arm64` `.tar.gz` tarballs, from the release's `SHASUMS256.txt`. |
+| `node_version` | string | `"26.13.1"` | Node.js release to install. Change `checksums` with it. |
+| `checksums` | map(string) | The tarballs of 26.13.1 | SHA-256 of the `x64` and `arm64` `.tar.gz` tarballs, from the release's `SHASUMS256.txt`. |
 | `global_packages` | map(string) | `{}` | npm packages to install globally, by name, each at an exact version, such as `{ semver = "7.8.5" }`. Ranges and tags aren't accepted. |
 
 ## Outputs
 
 | Name | Description |
 | --- | --- |
-| `node_home` | Directory of the installed release on each host, by host name, such as `{ app1 = "/opt/nodejs/node-v26.13.0-linux-x64" }`. |
+| `node_home` | Directory of the installed release on each host, by host name, such as `{ app1 = "/opt/nodejs/node-v26.13.1-linux-x64" }`. |
 
 ## Requirements
 
@@ -96,7 +96,7 @@ Requires Conn3x v0.7.1 or later, and hosts with outbound HTTPS to nodejs.org, pl
 
 ## Tested on
 
-Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. [examples/local](examples/local) was applied to each on arm64, and the second plan had no changes. In a login shell, `node` was v26.13.0 and ran a small script, and the global `semver` command accepted a version inside a range and rejected one outside it. CI runs the same checks on amd64.
+Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. [examples/local](examples/local) was applied to each on arm64, and the second plan had no changes. In a login shell, `node` was v26.13.1 and ran a small script, and the global `semver` command accepted a version inside a range and rejected one outside it. CI runs the same checks on amd64.
 
 On an Ubuntu 24.04 droplet and a Rocky Linux 10 droplet with SELinux enforcing, both `s-1vcpu-1gb`, amd64: the same checks passed. A wrong checksum failed the apply and left nothing behind. Moving to 24.22.2 repointed `node` with the global package still working, and moving back was clean. After a reboot the plan had no changes and the checks still passed.
 
