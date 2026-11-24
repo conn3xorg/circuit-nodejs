@@ -1,6 +1,6 @@
 # Local example
 
-Applies circuit-nodejs to a throwaway Rocky Linux 10 container with systemd, installing Node.js 26.13.0 and the `semver` command from npm. You need Conn3x and Podman.
+Applies circuit-nodejs to a throwaway Rocky Linux 10 container with systemd, installing Node.js 26.13.1 and the `semver` command from npm. You need Conn3x and Podman.
 
 ```sh
 ./up.sh

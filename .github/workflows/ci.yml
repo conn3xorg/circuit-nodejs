@@ -75,7 +75,7 @@ jobs:
         run: |
           sudo podman exec circuit-nodejs bash -lc '
             set -eux
-            node -p process.version | grep -x v26.13.0
+            node -p process.version | grep -x v26.13.1
             echo "console.log(\"sum\", [1,2,3].reduce((a,b)=>a+b))" > /tmp/t.js
             node /tmp/t.js | grep -x "sum 6"
             semver -r "^1.0.0" 1.2.3 | grep -x 1.2.3
